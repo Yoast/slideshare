@@ -8,12 +8,6 @@ Author: Joost de Valk
 Author URI: https://yoast.com/
 */
 
-function yst_slideshare_init() {
-	load_plugin_textdomain( 'slideshare', null, plugins_url( 'languages', __FILE__ ) );
-}
-
-add_action( 'init', 'yst_slideshare_init' );
-
 if ( ! class_exists( 'Yoast_SlideShare_Admin' ) && is_admin() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
 
 	require_once( 'yst_plugin_tools.php' );
@@ -36,6 +30,14 @@ if ( ! class_exists( 'Yoast_SlideShare_Admin' ) && is_admin() && ( ! defined( 'D
 			add_action( 'admin_print_styles', array( &$this, 'config_page_styles' ) );
 
 			add_action( 'admin_init', array( &$this, 'options_init' ) );
+			add_action( 'plugins_loaded', array($this, 'set_plugin_textdomain'), 1 );
+		}
+
+		/**
+		 * Load i18n
+		 */
+		function set_plugin_textdomain() {
+			load_plugin_textdomain( 'slideshare', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' ); 
 		}
 
 		/**
